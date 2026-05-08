@@ -1,0 +1,72 @@
+{{- if .Values.internalPostgres.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dataverseup.fullname" . }}-postgres
+  labels:
+    {{- include "dataverseup.internalPostgresLabels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "dataverseup.internalPostgresSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dataverseup.internalPostgresSelectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: postgres
+          image: {{ .Values.internalPostgres.image | quote }}
+          imagePullPolicy: {{ .Values.internalPostgres.imagePullPolicy }}
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: {{ .Values.internalPostgres.database | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.internalPostgres.user | quote }}
+            - name: POSTGRES_PASSWORD
+              {{- if .Values.internalPostgres.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.internalPostgres.existingSecret | quote }}
+                  key: {{ .Values.internalPostgres.secretKeys.password | quote }}
+              {{- else }}
+              value: {{ required "internalPostgres.password is required when internalPostgres.existingSecret is not set" .Values.internalPostgres.password | quote }}
+              {{- end }}
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", {{ .Values.internalPostgres.user | quote }}, "-d", {{ .Values.internalPostgres.database | quote }}]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", {{ .Values.internalPostgres.user | quote }}, "-d", {{ .Values.internalPostgres.database | quote }}]
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 4
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          {{- with .Values.internalPostgres.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: postgres-data
+          {{- if .Values.internalPostgres.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "dataverseup.fullname" . }}-postgres-data
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+{{- end }}

@@ -140,8 +140,25 @@ spec:
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.internalSolr.enabled .Values.extraEnvVars .Values.awsS3.enabled }}
+          {{- if or .Values.internalSolr.enabled .Values.internalPostgres.enabled .Values.extraEnvVars .Values.awsS3.enabled }}
           env:
+            {{- if .Values.internalPostgres.enabled }}
+            - name: DATAVERSE_DB_HOST
+              value: {{ include "dataverseup.postgresHost" . | quote }}
+            - name: DATAVERSE_DB_NAME
+              value: {{ .Values.internalPostgres.database | quote }}
+            - name: DATAVERSE_DB_USER
+              value: {{ .Values.internalPostgres.user | quote }}
+            - name: DATAVERSE_DB_PASSWORD
+              {{- if .Values.internalPostgres.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.internalPostgres.existingSecret | quote }}
+                  key: {{ .Values.internalPostgres.secretKeys.password | quote }}
+              {{- else }}
+              value: {{ .Values.internalPostgres.password | quote }}
+              {{- end }}
+            {{- end }}
             {{- if .Values.internalSolr.enabled }}
             {{- $solrSvc := printf "%s-solr" (include "dataverseup.fullname" .) }}
             # GDCC ct profile defaults to solr:8983 + core collection1; override for in-chart Solr (core from solrInit.collection).

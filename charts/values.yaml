@@ -207,6 +207,27 @@ affinity: {}
 # Optional raw initContainers run before the main container (same idea as Hyrax chart solrPreSetupInitContainer).
 solrPreSetupInitContainer: []
 
+# Optional in-cluster Postgres. Suitable for minikube and single-node dev clusters.
+# For production use an external managed Postgres and supply DATAVERSE_DB_* via extraEnvFrom/extraEnvVars.
+# Credentials: prefer existingSecret for anything beyond local dev.
+internalPostgres:
+  enabled: false
+  image: postgres:17
+  imagePullPolicy: IfNotPresent
+  database: dataverse
+  user: dataverse
+  # Plaintext password — dev/minikube only. Use existingSecret in production.
+  password: ""
+  # Name of an existing Secret with a key matching secretKeys.password.
+  existingSecret: ""
+  secretKeys:
+    password: password
+  resources: {}
+  persistence:
+    enabled: false
+    size: 5Gi
+    storageClassName: ""
+
 # Dedicated Solr for this release only — not a shared cluster Solr service or SolrCloud pool.
 # Pair with solrInit.enabled and solrInit.mode: standalone (default). solrHttpBase can stay empty: the chart
 # fills http://<release>-solr.<namespace>.svc.cluster.local:8983 when internalSolr is enabled.

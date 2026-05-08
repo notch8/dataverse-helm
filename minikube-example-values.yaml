@@ -208,6 +208,20 @@ affinity: {}
 # Optional raw initContainers run before the main container (same idea as Hyrax chart solrPreSetupInitContainer).
 solrPreSetupInitContainer: []
 
+# In-cluster Postgres for local development. Not for production.
+internalPostgres:
+  enabled: true
+  image: postgres:17
+  imagePullPolicy: IfNotPresent
+  database: dataverse
+  user: dataverse
+  password: dataverse
+  resources: {}
+  persistence:
+    enabled: false
+    size: 5Gi
+    storageClassName: ""
+
 # Purpose-built Dataverse Solr image with schema.xml, solrconfig.xml, and the full Solr _default
 # configset (lang/, stopwords.txt, etc.) baked in. Built from docker/solr/Dockerfile in this repo
 # and published to GHCR via CI.
@@ -224,7 +238,7 @@ internalSolr:
     storageClassName: ""
 
 # Waits for the Solr core ping before Payara starts. In standalone mode (used with internalSolr)
-# this only polls — no confConfigMap needed when the purpose-built image is used.
+# this only polls
 solrInit:
   enabled: true
   image: solr:9.10.1

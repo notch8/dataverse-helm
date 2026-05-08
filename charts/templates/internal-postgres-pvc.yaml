@@ -1,0 +1,17 @@
+{{- if and .Values.internalPostgres.enabled .Values.internalPostgres.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "dataverseup.fullname" . }}-postgres-data
+  labels:
+    {{- include "dataverseup.internalPostgresLabels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.internalPostgres.persistence.size }}
+  {{- if .Values.internalPostgres.persistence.storageClassName }}
+  storageClassName: {{ .Values.internalPostgres.persistence.storageClassName | quote }}
+  {{- end }}
+{{- end }}

@@ -106,6 +106,33 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Labels for the optional in-chart Postgres Deployment/Service.
+*/}}
+{{- define "dataverseup.internalPostgresLabels" -}}
+helm.sh/chart: {{ include "dataverseup.chart" . }}
+app.kubernetes.io/name: {{ include "dataverseup.name" . }}-postgres
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: internal-postgres
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{- define "dataverseup.internalPostgresSelectorLabels" -}}
+app.kubernetes.io/name: {{ include "dataverseup.name" . }}-postgres
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: internal-postgres
+{{- end }}
+
+{{/*
+Hostname of the in-chart Postgres Service.
+*/}}
+{{- define "dataverseup.postgresHost" -}}
+{{- printf "%s-postgres" (include "dataverseup.fullname" .) -}}
+{{- end }}
+
+{{/*
 Solr admin base URL (no path) for solrInit initContainer: explicit solrInit.solrHttpBase, else in-release Solr
 Service when internalSolr is enabled, else a placeholder for external / shared cluster Solr (override required).
 */}}
