@@ -1,0 +1,27 @@
+apiVersion: v2
+name: dataverseup
+description: Dataverse (Payara) on Kubernetes; optional in-cluster standalone Solr; Postgres external; optional S3.
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.1.12
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
+appVersion: "6.10.1-noble-r0"
+
+# Dataverse svg icon, base64 encoded
+icon: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgMzIwIDUxMiI+PHRpdGxlPkRhdGF2ZXJzZSBTVkcgSWNvbjwvdGl0bGU+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJtMjM0LjU1OSAxNTEuMzM0bC0uMDQyLjAwMmwtMTAuMzQ3LTU0LjUyM2MxNS4zODItNy43MDMgMjUuOTktMjMuNTc1IDI1Ljk5LTQxLjkxOEMyNTAuMTYgMjkuMDM3IDIyOS4xMjMgOCAyMDMuMjY3IDhjLTI1Ljg1OCAwLTQ2Ljg5OSAyMS4wMzctNDYuODk5IDQ2Ljg5N2MwIDI1Ljg1OCAyMS4wNCA0Ni44OTcgNDYuOSA0Ni44OTdjLjY0OCAwIDEuMjgyLS4wNzMgMS45MjctLjFsOS45NzIgNTIuNTQxYy0yNy4yNiA4LjMyNS00Ny4xNDkgMzMuNjk1LTQ3LjE0OSA2My42NDNjMCAyMi4wNDMgMTAuODE3IDQxLjU1OSAyNy4zNzYgNTMuNjc2bC0yMS43NzkgMzYuODc3YTEwMy42NCAxMDMuNjQgMCAwIDAtNTAuNDE2LTEzLjAzMmMtNTcuNTE0IDAtMTA0LjMwMyA0Ni43OS0xMDQuMzAzIDEwNC4zQzE4Ljg5NiA0NTcuMjEgNjUuNjg2IDUwNCAxMjMuMiA1MDRzMTA0LjMtNDYuNzkgMTA0LjMtMTA0LjNjMC0zMi4yMTYtMTQuNjg2LTYxLjA2LTM3LjcxLTgwLjIwOGwyMi45My0zOC44MjdjNi44NTIgMi4zOTEgMTQuMTggMy43NTggMjEuODQgMy43NThjMzYuNjkyIDAgNjYuNTQzLTI5Ljg1MSA2Ni41NDMtNjYuNTQzYzAtMzYuNjk2LTI5Ljg1My02Ni41NDctNjYuNTQ1LTY2LjU0N3ptLTI2LjYxMSAyNDguMzY1YzAgNDYuNzI3LTM4LjAxOCA4NC43NDYtODQuNzUgODQuNzQ2cy04NC43NS0zOC4wMTktODQuNzUtODQuNzQ2YzAtNDYuNzMgMzguMDE5LTg0Ljc0OCA4NC43NS04NC43NDhzODQuNzUgMzguMDE5IDg0Ljc1IDg0Ljc0OG0tNC42OC0zMTQuMjAxYy0xNi44NzUgMC0zMC42MDQtMTMuNzI3LTMwLjYwNC0zMC42MDFzMTMuNzI5LTMwLjYwMSAzMC42MDMtMzAuNjAxczMwLjYgMTMuNzI3IDMwLjYgMzAuNmMwIDE2Ljg3NS0xMy43MjcgMzAuNjAyLTMwLjYgMzAuNjAybTMxLjI5IDE3OS4zN2MtMjUuOTEgMC00Ni45ODktMjEuMDgtNDYuOTg5LTQ2Ljk5czIxLjA4LTQ2Ljk5IDQ2Ljk5LTQ2Ljk5czQ2Ljk5IDIxLjA4MSA0Ni45OSA0Ni45OWMuMDAyIDI1LjkxLTIxLjA4IDQ2Ljk5LTQ2Ljk5IDQ2Ljk5Ii8+PC9zdmc+Cg=
