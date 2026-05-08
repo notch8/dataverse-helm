@@ -210,12 +210,7 @@ solrPreSetupInitContainer: []
 
 # Purpose-built Dataverse Solr image with schema.xml, solrconfig.xml, and the full Solr _default
 # configset (lang/, stopwords.txt, etc.) baked in. Built from docker/solr/Dockerfile in this repo
-# and published to GHCR via CI. No confConfigMap required — conf is already in the image.
-#
-# To build locally for minikube before the CI image is available:
-#   eval $(minikube docker-env)
-#   docker build -f docker/solr/Dockerfile -t dataverse-solr:local .
-# Then set image below to dataverse-solr:local and imagePullPolicy: Never.
+# and published to GHCR via CI.
 internalSolr:
   enabled: true
   image: ghcr.io/notch8/dataverse-solr:6.10.1-noble-r0

@@ -19,16 +19,6 @@ The minikube example uses a purpose-built Solr image that has the correct Datave
 `stopwords.txt`, etc.) baked in. This keeps the Solr conf version-locked to the Dataverse
 release and requires no manual ConfigMap setup.
 
-Once CI publishes the image to GHCR you can skip this step. Until then, build it locally
-inside the minikube Docker environment so minikube can pull it without a registry:
-
-```bash
-eval $(minikube docker-env)
-docker build --build-arg DATAVERSE_VERSION=6.10.1 \
-    -t ghcr.io/notch8/dataverse-solr:6.10.1-noble-r0 \
-    docker/solr
-```
-
 ## Deploy
 
 Preview what the chart will render:
