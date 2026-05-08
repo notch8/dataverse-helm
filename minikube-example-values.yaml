@@ -64,9 +64,21 @@ extraEnvFrom: []
 #     name: dataverse-nonsecret-config
 
 # Pass through to the Deployment; use ops/*-deploy.tmpl.yaml + envsubst for per-env values.
-extraEnvVars: []
-# - name: EXAMPLE
-#   value: "from-template"
+extraEnvVars:
+  # Fake/demo PID provider required for first boot — ConfigCheckService will refuse to deploy
+  # the WAR without at least one configured PID provider. Replace with real DOI settings for production.
+  - name: DATAVERSE_PID_PROVIDERS
+    value: "demo"
+  - name: DATAVERSE_PID_DEFAULT_PROVIDER
+    value: "demo"
+  - name: DATAVERSE_PID_DEMO_TYPE
+    value: "FAKE"
+  - name: DATAVERSE_PID_DEMO_LABEL
+    value: "demo"
+  - name: DATAVERSE_PID_DEMO_AUTHORITY
+    value: "10.5072"
+  - name: DATAVERSE_PID_DEMO_SHOULDER
+    value: "FK2/"
 
 livenessProbe:
   httpGet:
@@ -284,7 +296,7 @@ awsS3:
 #   (repo scripts + fixtures baked into a ConfigMap). Uses emptyDir for bootstrap.env inside the Job only.
 # - helmHook=true: runs once on install only (not upgrade). helmHook=false: plain Job (immutable spec on upgrade).
 bootstrapJob:
-  enabled: false
+  enabled: true
   mode: oneShot
   helmHook: true
   image:
@@ -294,7 +306,6 @@ bootstrapJob:
   command:
     - bootstrap.sh
     - dev
-  # Empty = http://<fullname>.<namespace>.svc.cluster.local:<service.port> (matches DATAVERSE_URL on Deployment).
   dataverseUrl: ""
   timeout: 20m
   backoffLimit: 2
