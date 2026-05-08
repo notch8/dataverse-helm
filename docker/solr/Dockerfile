@@ -26,3 +26,4 @@ COPY --from=dataverse-solr-conf --chown=solr:solr /solr-conf/ \
 USER solr
 
 CMD ["solr-precreate", "dataverse", "/opt/solr/server/solr/configsets/dataverse"]
+
